@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo Fetching</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1 class="text-center text-primary m-5">ToDo Data</h1>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+           <table class="border border-2 border-primary">
+            <thead>
+                <tr>
+                    <th class="border border-2 border-primary">Userid</th>
+                    <th class="border border-2 border-primary">Id</th>
+                    <th class="border border-2 border-primary">Title</th>
+                    <th class="border border-2 border-primary">Completed</th>
+                </tr>
+            </thead>
+            <tbody id="result">
+
+            </tbody>
+           </table>
+        </div>
+        <div class="col-4"></div>
+    </div>
+
+    
+</body>
+<script>
+    //AJAX API CALL
+    //1 Create an XMLHttpRequest object
+    const request = new XMLHttpRequest();
+    //2 Connect or API CALL
+    request.open('get','https://jsonplaceholder.typicode.com/todos')
+    //3 send
+    request.send()
+    //4 set onreadystatechange
+    request.onreadystatechange=()=>{
+        if(request.readyState==4){
+            if(request.status>199 && request.status<300){
+                console.log(request.responseText);//array of objects
+                let arrayTodo = JSON.parse(request.responseText)
+                console.log(arrayTodo);
+                displayArray(arrayTodo)
+            }
+            else{
+                alert('Failed to connect to jsonplaceholder')
+            }
+        }
+    }
+    //5 To display the array of data into the html page 
+    function displayArray(arrayTodo){
+        for(let todo of arrayTodo){
+            htmlData = `
+            <tr>
+                <td>
+                    ${todo.userId}
+                    </td>
+                    <td class="border border-2 border-primary">${todo.id}</td>
+                    <td class="border border-2 border-primary">${todo.title}</td>
+                    <td class="border border-2 border-primary">${todo.completed}</td>
+                </tr>
+            `
+            result.innerHTML+=htmlData
+        }
+
+
+    }
+
+</script>
+</html>
